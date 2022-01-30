@@ -48,7 +48,7 @@ defmodule SarqXReporter.MixProject do
     [
       setup: ["cmd mix setup"],
       b: ["cmd mix escript.build"],
-      br: ["cmd mix escript.build && ./sarqx_reporter --run"]
+      br: ["cmd mix escript.build && ./sarqx_reporter --help"]
     ]
   end
 end
