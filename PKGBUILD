@@ -26,14 +26,12 @@ build() {
 package() {
   cd $pkgname
 
-  mkdir -p $pkgdir/opt/$pkgname/bin
   # TODO: maybe I should change permission of bin files
+  mkdir -p $pkgdir/opt/$pkgname/bin
   install -Dm755 $pkgname $pkgdir/opt/$pkgname/bin
 
-
   mkdir -p $pkgdir/usr/bin/
-  ln -s $pkgdir/opt/$pkgname/bin/$pkgname $pkgdir/usr/bin/$pkgname
-  chmod 755 $pkgdir/usr/bin/$pkgname
+  ln -s /opt/$pkgname/bin/$pkgname $pkgdir/usr/bin/$pkgname
 
   mkdir -p "$pkgdir"/var/opt/"$pkgname"/logs
   # HELP: chmod 600 provides read and write permission for user
