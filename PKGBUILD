@@ -26,6 +26,9 @@ build() {
 package() {
   cd $pkgname
 
+  mkdir -p $pkgdir/opt/$pkgname/share/licenses
+  install -Dm644 LICENSE $pkgdir/opt/$pkgname/share/licenses
+
   # TODO: maybe I should change permission of bin files
   mkdir -p $pkgdir/opt/$pkgname/bin
   install -Dm755 $pkgname $pkgdir/opt/$pkgname/bin
@@ -33,7 +36,7 @@ package() {
   mkdir -p $pkgdir/usr/bin/
   ln -s /opt/$pkgname/bin/$pkgname $pkgdir/usr/bin/$pkgname
 
-  mkdir -p "$pkgdir"/var/opt/"$pkgname"/logs
+  mkdir -p $pkgdir/var/opt/$pkgname/logs
   # HELP: chmod 600 provides read and write permission for user
   chmod 644 $pkgdir/var/opt/$pkgname/logs
 
