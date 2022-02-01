@@ -46,10 +46,4 @@ package() {
 
   mkdir -p $pkgdir/etc/systemd/system
   install -Dm644 sarqxd.service $pkgdir/etc/systemd/system/
-
-  # pkgdesc='GTK+3 implementation of wxWidgets API for GUI'
-  # depends=('gtk3' 'gst-plugins-base-libs' 'libsm' 'libxxf86vm' 'libnotify')
-  # optdepends=('webkit2gtk: for webview support')
-  # conflicts=('wxgtk<3.0.3.1-2' 'wxgtk3')
-  # provides=('wxgtk3')
 }
