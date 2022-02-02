@@ -7,7 +7,7 @@ pkgdesc="CLI application."
 arch=(i686 x86_64)
 url=https://gitlab.com/sarqx_group/sarqx-reporter
 license=('GPL')
-depends=('erlang' 'elixir' 'dmidecode' 'zenity')
+depends=('erlang' 'elixir' 'dmidecode' 'zenity' 'sha1sum')
 checkdepends=('systemd')
 makedepends=(git make)
 provides=($pkgname=$pkgver)
