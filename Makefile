@@ -12,6 +12,4 @@ install:
 	@mix deps.compile
 	@mix escript.build
 
-	@mv ./sarqx_reporter ./sarqx-reporter
-
 .PHONY = install

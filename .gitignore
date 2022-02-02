@@ -25,4 +25,4 @@ sarqx_reporter-*.tar
 # Temporary files, for example, from tests.
 /tmp/
 
-sarqx_reporter
+/bin
