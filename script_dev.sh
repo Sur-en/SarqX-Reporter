@@ -2,7 +2,7 @@
 
 # TODO: check that log file starts from [NEW] status
 
-LOG_DIR="/var/opt/sarqx-reporter/logs"
+LOG_DIR=$1
 
 WHO_AM_I=$(whoami)
 
@@ -27,6 +27,7 @@ if [[ $WHO_AM_I == "root" ]]; then
 
       touch "$FILE_PATH"
       echo -e "$LOG_DATE $NEW_STATUS:\n$STAT\n" > $FILE_PATH
+      chmod a=rw "$FILE_PATH"
     fi
 
     sleep 1s

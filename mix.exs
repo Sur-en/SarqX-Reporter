@@ -32,7 +32,7 @@ defmodule SarqXReporter.MixProject do
   end
 
   defp escript do
-    [main_module: SarqXReporter.CLI, name: "sarqx-reporter", path: "./bin/sarqx-reporter"]
+    [main_module: SarqXReporter.CLI, name: "sarqx-reporter"]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.

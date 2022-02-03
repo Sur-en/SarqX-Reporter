@@ -7,8 +7,8 @@ pkgdesc="CLI application."
 arch=(i686 x86_64)
 url=https://gitlab.com/sarqx_group/sarqx-reporter
 license=('GPL')
-depends=('erlang' 'elixir' 'dmidecode' 'zenity' 'sha1sum')
-checkdepends=('systemd')
+depends=('erlang' 'elixir' 'dmidecode' 'zenity')
+checkdepends=('systemd' 'sha1sum')
 makedepends=(git make)
 provides=($pkgname=$pkgver)
 conflicts=($pkgname)
@@ -31,8 +31,9 @@ package() {
 
   # TODO: maybe I should change permission of bin files
   mkdir -p $pkgdir/opt/$pkgname/bin
-  install -Dm755 ./bin/$pkgname $pkgdir/opt/$pkgname/bin
+  install -Dm755 $pkgname $pkgdir/opt/$pkgname/bin
   install -Dm755 askpass.sh $pkgdir/opt/$pkgname/bin
+  install -Dm755 script.sh $pkgdir/opt/$pkgname/bin
 
   mkdir -p $pkgdir/usr/bin/
   ln -s /opt/$pkgname/bin/$pkgname $pkgdir/usr/bin/$pkgname
@@ -45,6 +46,9 @@ package() {
   mkdir -p $pkgdir/etc/opt/$pkgname
   chmod 600 $pkgdir/etc/opt/$pkgname
 
+  # Create daemon file and give its name
+  systemd_file_name=$(make create_systemd)
+
   mkdir -p $pkgdir/etc/systemd/system
-  install -Dm644 sarqxd.service $pkgdir/etc/systemd/system/
+  install -Dm644 $(systemd_file_name) $pkgdir/etc/systemd/system
 }

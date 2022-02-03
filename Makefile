@@ -12,4 +12,7 @@ install:
 	@mix deps.compile
 	@mix escript.build
 
-.PHONY = install
+create_systemd:
+	@./create_systemd.sh
+
+.PHONY = install create_systemd
