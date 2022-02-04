@@ -5,7 +5,7 @@ function find_path_to_script() {
     local path='/opt/sarqx-reporter/bin/script.sh'
     echo "$path"
   else
-    local path="$(pwd)/script.sh"
+    local path="$(pwd)/sarqx-reporter --run"
     echo "$path"
   fi
 }
@@ -23,6 +23,7 @@ function make_daemon_file_name() {
 PATH_TO_SCRIPT=$(find_path_to_script)
 FILE_NAME=$(make_daemon_file_name)
 
+# TODO: send path to log directory via ExecStart
 CONTENT="[Unit]
 Description = SarqX CLI daemon
 After = network.target
@@ -30,7 +31,7 @@ Wants = network-online.target
 
 [Service]
 Type = simple
-User = $(whoami)
+User = root
 ExecStart = $PATH_TO_SCRIPT
 Restart = on-abort
 StartLimitInterval = 60

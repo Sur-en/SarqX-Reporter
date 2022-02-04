@@ -13,7 +13,6 @@ if [[ $WHO_AM_I == "root" ]]; then
     SHA1=$(echo -n "$STAT" | sha1sum | cut -d " " -f1)
 
     FILE_PATH="$LOG_DIR/$SHA1.srq"
-    echo $FILE_PATH
 
     if [ -f "$FILE_PATH" ]; then
       # When file exists just log that everything is ok

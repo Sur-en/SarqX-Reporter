@@ -50,5 +50,5 @@ package() {
   systemd_file_name=$(make create_systemd)
 
   mkdir -p $pkgdir/etc/systemd/system
-  install -Dm644 $(systemd_file_name) $pkgdir/etc/systemd/system
+  install -Dm644 $systemd_file_name $pkgdir/etc/systemd/system
 }

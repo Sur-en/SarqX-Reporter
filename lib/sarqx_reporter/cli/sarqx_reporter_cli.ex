@@ -1,5 +1,5 @@
 defmodule SarqXReporter.CLI do
-  alias SarqXReporter.{Systemd, Help}
+  alias SarqXReporter.{Systemd, Help, PCStatLogger}
 
   @moduledoc """
   To compile application type `mix escript.build`.
@@ -21,6 +21,12 @@ defmodule SarqXReporter.CLI do
   def process_args(disable: true), do: Systemd.execute("disable")
   def process_args(start: true), do: Systemd.execute("start")
   def process_args(stop: true), do: Systemd.execute("stop")
+
+  # TODO: get directory path as function argument
+  def process_args(run: true) do
+    mock_dir_path = "/home/suro/Projects/sarqx_reporter/logs"
+    PCStatLogger.execute(mock_dir_path)
+  end
 
   def process_args(help: true), do: Help.execute()
 
