@@ -6,7 +6,13 @@ defmodule SarqXReporter.Systemd do
         _ -> "#{File.cwd!()}/askpass.sh"
       end
 
-    System.shell("sudo systemctl #{option} sarqxd.service",
+    daemon_name =
+      case System.get_env("MIX_ENV") do
+        nil -> "/etc/systemd/system/sarqxd.service"
+        _ -> "/etc/systemd/system/sarqxd-dev.service"
+      end
+
+    System.shell("sudo systemctl #{option} #{daemon_name}",
       env: [{"SUDO_ASKPASS", askpass_path}],
       into: IO.stream(:stdio, :line)
     )

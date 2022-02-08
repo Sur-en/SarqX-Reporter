@@ -3,7 +3,7 @@ defmodule SarqXReporter.CLITest do
   doctest SarqXReporter
 
   test "Test main" do
-    # IO.inspect(SarxReporter.CLI.main(["--help"]))
+    # IO.inspect(SarqXReporter.CLI.main(["--help"]))
   end
 
   test "Test parse_args" do

@@ -33,7 +33,6 @@ package() {
   mkdir -p $pkgdir/opt/$pkgname/bin
   install -Dm755 $pkgname $pkgdir/opt/$pkgname/bin
   install -Dm755 askpass.sh $pkgdir/opt/$pkgname/bin
-  install -Dm755 script.sh $pkgdir/opt/$pkgname/bin
 
   mkdir -p $pkgdir/usr/bin/
   ln -s /opt/$pkgname/bin/$pkgname $pkgdir/usr/bin/$pkgname

@@ -1,6 +1,16 @@
-defmodule SarqXReporter.PCStatLogger do
+defmodule SarqXReporter.StatLogger do
   def execute(directory) do
-    {cpu_stat, _} = System.shell("dmidecode -t processor")
+    {cpu_stat, _} =
+      case System.get_env("MIX_ENV") do
+        nil ->
+          System.shell("sudo dmidecode -t processor",
+            env: [{"SUDO_ASKPASS", "./askpass.sh"}]
+          )
+
+        _ ->
+          System.shell("dmidecode -t processor")
+      end
+
     cpu_stat = String.slice(cpu_stat, 0..-2)
     sha1 = :crypto.hash(:sha, cpu_stat) |> Base.encode16() |> String.downcase()
 
@@ -8,8 +18,13 @@ defmodule SarqXReporter.PCStatLogger do
     file_path = Path.join([directory, file_name])
 
     case File.exists?(file_path) do
-      true -> append_log(file_path)
-      false -> add_log(file_path, cpu_stat)
+      true ->
+        append_log(file_path)
+        :ok
+
+      false ->
+        add_log(file_path, cpu_stat)
+        {:new, cpu_stat}
     end
   end
 
