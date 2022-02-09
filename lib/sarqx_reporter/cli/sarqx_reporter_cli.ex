@@ -2,7 +2,9 @@ defmodule SarqXReporter.CLI do
   alias SarqXReporter.{Systemd, Help, StatLogger}
   require Logger
 
+  @credential Application.get_env(:sarqx_reporter, :path_to_credential_file)
   @host Application.get_env(:sarqx_reporter, :server_host)
+  @base_url @host <> "/api/rest/v1"
 
   @moduledoc """
   To compile application type `mix escript.build`.
@@ -30,7 +32,6 @@ defmodule SarqXReporter.CLI do
   def process_args(start: true), do: Systemd.execute("start")
   def process_args(stop: true), do: Systemd.execute("stop")
 
-  # TODO: get directory path as function argument
   def process_args(run: log_dir_path) do
     result =
       case StatLogger.execute(log_dir_path) do
@@ -40,11 +41,38 @@ defmodule SarqXReporter.CLI do
 
     {:ok, report} = Jason.encode(result)
 
-    HTTPoison.post(
-      "#{@host}/api/rest/v1/reports",
-      report,
-      [{"Content-Type", "application/json"}]
-    )
+    HTTPoison.post(@base_url <> "/reports", report, [{"Content-Type", "application/json"}])
+  end
+
+  def process_args(register: true) do
+    if File.exists?(@credential) == true do
+      IO.puts("Reporter already registered.")
+    else
+      IO.puts("Please fill in the fields.")
+      email = IO.gets("Email: ") |> String.trim()
+      name = IO.gets("Name: ") |> String.trim()
+      surname = IO.gets("Surname: ") |> String.trim()
+      device_type = IO.gets("Type of device: ") |> String.trim()
+
+      {:ok, request_body} =
+        Jason.encode(%{
+          "email" => email,
+          "name" => name,
+          "surname" => surname,
+          "device_type" => device_type
+        })
+
+      {:ok, response} =
+        HTTPoison.post(@base_url <> "/reporter", request_body, [
+          {"Content-Type", "application/json"}
+        ])
+
+      mocked_response = %{client_id: 314, client_secret: "secreto"}
+
+      File.write!(@credential, Jason.encode!(mocked_response))
+
+      IO.puts("Your reporter successfully registered.")
+    end
   end
 
   def process_args(help: true), do: Help.execute()

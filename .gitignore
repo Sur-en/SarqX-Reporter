@@ -26,4 +26,5 @@ sarqx_reporter-*.tar
 /tmp/
 
 /logs
+/etc
 /sarqx-reporter
