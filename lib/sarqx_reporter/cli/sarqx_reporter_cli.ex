@@ -41,7 +41,16 @@ defmodule SarqXReporter.CLI do
 
     {:ok, report} = Jason.encode(result)
 
-    HTTPoison.post(@base_url <> "/reports", report, [{"Content-Type", "application/json"}])
+    {:ok, credentials} = File.read(@credential)
+    {:ok, credentials} = Jason.decode(credentials)
+    credentials = URI.encode_query(credentials)
+    token_type = "Phoenix"
+    token = token_type <> " " <> SarqXReporter.Token.sign(credentials)
+
+    HTTPoison.post(@base_url <> "/reports", report, [
+      {"Content-Type", "application/json"},
+      {"Authorization", token}
+    ])
   end
 
   def process_args(register: true) do

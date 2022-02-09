@@ -27,7 +27,8 @@ defmodule SarqXReporter.MixProject do
     [
       {:websockex, "~> 0.4.2"},
       {:jason, "~> 1.0"},
-      {:httpoison, "~> 1.8.0"}
+      {:httpoison, "~> 1.8.0"},
+      {:plug_crypto, "~> 1.2.0"}
     ]
   end
 
