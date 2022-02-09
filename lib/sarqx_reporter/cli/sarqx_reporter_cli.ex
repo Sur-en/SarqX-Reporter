@@ -75,6 +75,33 @@ defmodule SarqXReporter.CLI do
     end
   end
 
+  def process_args(edit: true) do
+    if File.exists?(@credential) == true do
+      IO.puts("Please fill in the fields.")
+      email = IO.gets("Email: ") |> String.trim()
+      name = IO.gets("Name: ") |> String.trim()
+      surname = IO.gets("Surname: ") |> String.trim()
+      device_type = IO.gets("Type of device: ") |> String.trim()
+
+      {:ok, request_body} =
+        Jason.encode(%{
+          "email" => email,
+          "name" => name,
+          "surname" => surname,
+          "device_type" => device_type
+        })
+
+      {:ok, response} =
+        HTTPoison.patch(@base_url <> "/reporter", request_body, [
+          {"Content-Type", "application/json"}
+        ])
+
+      IO.puts("Reporter successfully edited.")
+    else
+      IO.puts("Reporter does not registered.")
+    end
+  end
+
   def process_args(help: true), do: Help.execute()
 
   def process_args(_) do
