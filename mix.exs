@@ -10,6 +10,7 @@ defmodule SarqXReporter.MixProject do
       start_permanent: Mix.env() == :prod,
       escript: escript(),
       deps: deps(),
+      dialyzer: [plt_add_deps: :apps_direct, plt_add_apps: [:sarqx_reporter]],
       aliases: aliases()
     ]
   end
@@ -28,7 +29,8 @@ defmodule SarqXReporter.MixProject do
       {:websockex, "~> 0.4.2"},
       {:jason, "~> 1.0"},
       {:httpoison, "~> 1.8.0"},
-      {:plug_crypto, "~> 1.2.0"}
+      {:plug_crypto, "~> 1.2.0"},
+      {:dialyxir, "~> 1.0", only: [:dev], runtime: false}
     ]
   end
 

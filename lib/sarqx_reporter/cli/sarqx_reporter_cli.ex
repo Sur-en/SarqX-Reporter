@@ -33,8 +33,12 @@ defmodule SarqXReporter.CLI do
   def process_args(stop: true), do: Systemd.execute("stop")
 
   def process_args(run: log_dir_path) do
+    pid = spawn(StatLogger, :execute, [log_dir_path])
+    self_pid = self()
+    send(pid, {:ok, self_pid})
+
     result =
-      case StatLogger.execute(log_dir_path) do
+      receive do
         :ok -> %{"status" => "ok"}
         {:new, cpu_stat} -> %{"status" => "new", "cpu_stat" => cpu_stat}
       end
@@ -51,6 +55,10 @@ defmodule SarqXReporter.CLI do
       {"Content-Type", "application/json"},
       {"Authorization", token}
     ])
+
+    Process.sleep(5000)
+
+    process_args(run: log_dir_path)
   end
 
   def process_args(register: true) do
