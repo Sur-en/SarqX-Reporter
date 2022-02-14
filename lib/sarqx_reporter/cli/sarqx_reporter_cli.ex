@@ -51,6 +51,7 @@ defmodule SarqXReporter.CLI do
     token_type = "Phoenix"
     token = token_type <> " " <> SarqXReporter.Token.sign(credentials)
 
+    # TODO: handle error
     HTTPoison.post(@base_url <> "/reports", report, [
       {"Content-Type", "application/json"},
       {"Authorization", token}
@@ -79,6 +80,7 @@ defmodule SarqXReporter.CLI do
           "device_type" => device_type
         })
 
+      # TODO: handle error
       {:ok, response} =
         HTTPoison.post(@base_url <> "/reporter", request_body, [
           {"Content-Type", "application/json"}
@@ -108,6 +110,7 @@ defmodule SarqXReporter.CLI do
           "device_type" => device_type
         })
 
+      # TODO: handle error
       {:ok, response} =
         HTTPoison.patch(@base_url <> "/reporter", request_body, [
           {"Content-Type", "application/json"}

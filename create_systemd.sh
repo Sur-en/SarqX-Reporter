@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 
+ARG="$1"
+
 function find_path_to_launcher() {
-  if [[ $(whoami) == "root" ]]; then
+  if [[ $(whoami) == "root" ]] && [[ $ARG == "prod" ]]; then
     local path='/opt/sarqx-reporter/bin/sarqx-reporter'
+    echo "$path"
+  elif [[ $(whoami) == "root" ]] && [[ $ARG == "dev" ]]; then
+    local path="$(pwd)/sarqx-reporter"
     echo "$path"
   else
     local path="$(pwd)/sarqx-reporter"
@@ -11,8 +16,11 @@ function find_path_to_launcher() {
 }
 
 function find_path_to_logs_dir() {
-  if [[ $(whoami) == "root" ]]; then
+  if [[ $(whoami) == "root" ]] && [[ $ARG == "prod" ]]; then
     local path='/var/opt/sarqx-reporter/logs'
+    echo "$path"
+  elif [[ $(whoami) == "root" ]] && [[ $ARG == "dev" ]]; then
+    local path="$(pwd)/logs"
     echo "$path"
   else
     local path="$(pwd)/logs"
@@ -21,8 +29,11 @@ function find_path_to_logs_dir() {
 }
 
 function make_daemon_file_name() {
-  if [[ $(whoami) == "root" ]]; then
+  if [[ $(whoami) == "root" ]] && [[ $ARG == "prod" ]]; then
     local name="sarqxd.service"
+    echo "$name"
+  elif [[ $(whoami) == "root" ]] && [[ $ARG == "dev" ]]; then
+    local name="sarqxd-dev.service"
     echo "$name"
   else
     local name="sarqxd-dev.service"
@@ -31,8 +42,8 @@ function make_daemon_file_name() {
 }
 
 PATH_TO_LAUNCHER=$(find_path_to_launcher)
-FILE_NAME=$(make_daemon_file_name)
 PATH_TO_LOGS=$(find_path_to_logs_dir)
+FILE_NAME=$(make_daemon_file_name)
 
 # TODO: send path to log directory via ExecStart
 CONTENT="[Unit]

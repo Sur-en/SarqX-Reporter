@@ -1,16 +1,16 @@
 defmodule SarqXReporter.StatLogger do
+  @askpass Application.get_env(:sarqx_reporter, :askpass)
+
   def execute(directory) do
     receive do
       {:ok, sender} ->
         {cpu_stat, _} =
-          case System.get_env("MIX_ENV") do
-            nil ->
-              System.shell("sudo dmidecode -t processor",
-                env: [{"SUDO_ASKPASS", "./askpass.sh"}]
-              )
+          case System.shell("whoami") do
+            {"root\n", _} ->
+              System.shell("dmidecode -t processor")
 
             _ ->
-              System.shell("dmidecode -t processor")
+              :error
           end
 
         cpu_stat = String.slice(cpu_stat, 0..-2)
