@@ -1,17 +1,22 @@
 # SarqXReporter
 
-**TODO: Add description**
+SarqXReporter ծրագիրը նախատեսված է համակարգչի տվյալների ստացման և նրանց դեպի 
+SarqX կայք ուղարկելու համար։
 
-## Installation
+## Տեղադրում
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed by adding `sarqx_reporter` to your list of dependencies in `mix.exs`:
+SarqXReporter ծրագիրը ներկա պահին հասանելի է Git և AUR(Arch User Repository):
 
-```elixir
-def deps do
-  [
-    {:sarqx_reporter, "~> 0.1.0"}
-  ]
-end
+```
+yay -S sarqx-reporter
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc) and published on [HexDocs](https://hexdocs.pm). Once published, the docs can be found at <https://hexdocs.pm/sarqx_reporter>.
+## Ներքին կազմվածք
+
+Ծրագիրը տեղադրվում է հետևյալ տեղերում
+
+`/usr/bin/sarqx-reporter` \
+`/opt/sarqx-reporter` \
+`/var/opt/sarqx-reporter` \
+`/etc/opt/sarqx-reproter` \
+`/etc/systemd/system/sarqxd.service`
