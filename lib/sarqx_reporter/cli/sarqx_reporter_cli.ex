@@ -82,7 +82,7 @@ defmodule SarqXReporter.CLI do
 
       # TODO: handle error
       {:ok, response} =
-        HTTPoison.post(@base_url <> "/reporter", request_body, [
+        HTTPoison.post(@base_url <> "/reporters", request_body, [
           {"Content-Type", "application/json"}
         ])
 
@@ -112,7 +112,7 @@ defmodule SarqXReporter.CLI do
 
       # TODO: handle error
       {:ok, response} =
-        HTTPoison.patch(@base_url <> "/reporter", request_body, [
+        HTTPoison.patch(@base_url <> "/reporters", request_body, [
           {"Content-Type", "application/json"}
         ])
 
