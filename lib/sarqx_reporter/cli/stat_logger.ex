@@ -1,6 +1,4 @@
 defmodule SarqXReporter.StatLogger do
-  @askpass Application.get_env(:sarqx_reporter, :askpass)
-
   def execute(directory) do
     receive do
       {:ok, sender} ->
