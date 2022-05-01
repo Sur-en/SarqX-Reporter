@@ -8,5 +8,7 @@ defmodule SarqXReporter.Help do
     IO.puts("  --start \t start application's demon")
     IO.puts("  --stop \t stop application's demon")
     IO.puts("  --connect \t connect to the SarqX web-server")
+    IO.puts("  --register \t register user in SarqX")
+    IO.puts("  --edit \t edit user information in SarqX")
   end
 end
