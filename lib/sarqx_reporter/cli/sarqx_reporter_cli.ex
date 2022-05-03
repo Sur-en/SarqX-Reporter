@@ -80,15 +80,15 @@ defmodule SarqXReporter.CLI do
           "device_type" => device_type
         })
 
-      # TODO: handle error
-      {:ok, response} =
-        HTTPoison.post(@base_url <> "/reporters", request_body, [
+      response =
+        HTTPoison.post!(@base_url <> "/reporters", request_body, [
           {"Content-Type", "application/json"}
         ])
 
-      mocked_response = %{client_id: 314, client_secret: "secreto"}
-
-      File.write!(@credential, Jason.encode!(mocked_response))
+      System.shell("sudo sh -c 'echo #{Jason.encode!(response)} > #{@credential}'",
+        env: [{"SUDO_ASKPASS", "/opt/sarqx-reporter/bin/askpass.sh"}],
+        into: IO.stream(:stdio, :line)
+      )
 
       IO.puts("Your reporter successfully registered.")
     end
