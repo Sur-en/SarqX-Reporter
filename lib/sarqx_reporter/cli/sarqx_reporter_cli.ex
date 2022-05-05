@@ -39,20 +39,18 @@ defmodule SarqXReporter.CLI do
 
     result =
       receive do
-        :ok -> %{"status" => "ok"}
-        {:new, cpu_stat} -> %{"status" => "new", "cpu_stat" => cpu_stat}
+        {:ok, hash} -> %{"status" => "ok", "sha1" => hash}
+        {:new, cpu_stat} -> %{"status" => "new", "cpu_state" => cpu_stat}
       end
 
     {:ok, report} = Jason.encode(result)
 
     {:ok, credentials} = File.read(@credential)
-    token_type = "Phoenix"
-    token = token_type <> " " <> SarqXReporter.Token.sign(credentials)
 
     # TODO: handle error
     HTTPoison.post!(@base_url <> "/reports", report, [
       {"Content-Type", "application/json"},
-      {"Authorization", token}
+      {"Authorization", credentials}
     ])
 
     Process.sleep(5000)
@@ -78,12 +76,13 @@ defmodule SarqXReporter.CLI do
           "device_type" => device_type
         })
 
-      response =
-        HTTPoison.post!(@base_url <> "/reporters", request_body, [
+      # TODO: handle error
+      {:ok, %HTTPoison.Response{body: response}} =
+        HTTPoison.post(@base_url <> "/reporters", request_body, [
           {"Content-Type", "application/json"}
         ])
 
-      System.shell("sudo sh -c 'echo #{Jason.encode!(response)} > #{@credential}'",
+			System.shell("sudo sh -c 'echo #{response} > /etc/opt/sarqx-reporter/credentials.json'",
         env: [{"SUDO_ASKPASS", "/opt/sarqx-reporter/bin/askpass.sh"}],
         into: IO.stream(:stdio, :line)
       )
@@ -109,10 +108,9 @@ defmodule SarqXReporter.CLI do
         })
 
       # TODO: handle error
-      {:ok, response} =
-        HTTPoison.patch(@base_url <> "/reporters", request_body, [
-          {"Content-Type", "application/json"}
-        ])
+			HTTPoison.patch(@base_url <> "/reporters", request_body, [
+				{"Content-Type", "application/json"}
+			])
 
       IO.puts("Reporter successfully edited.")
     else
