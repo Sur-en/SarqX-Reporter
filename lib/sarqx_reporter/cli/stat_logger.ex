@@ -20,7 +20,7 @@ defmodule SarqXReporter.StatLogger do
         case File.exists?(file_path) do
           true ->
             append_log(file_path)
-            send(sender, :ok)
+            send(sender, {:ok, sha1})
 
           false ->
             add_log(file_path, cpu_stat)
